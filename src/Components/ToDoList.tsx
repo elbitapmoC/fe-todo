@@ -7,6 +7,12 @@ const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
     setTodos(todos.filter((todos: any) => todos.id !== id));
   };
 
+  const handleComplete = ({ id }: { id: string }) => {
+    let location = todos.find((x: any) => x.id === id);
+    location.completed = !location.completed;
+    setTodos([...todos, location]);
+  };
+
   const EmptyState = () => {
     return (
       <>
@@ -56,13 +62,13 @@ const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
                     {task}
                   </th>
                   <td className="py-4 px-6">
-                    <button>
+                    <button onClick={() => handleComplete({ id })}>
                       <IconCheck />
                     </button>
                     <button>
                       <IconEdit />
                     </button>
-                    <button onClick={() => handleDelete(id)}>
+                    <button onClick={() => handleDelete({ id })}>
                       <IconTrash />
                     </button>
                   </td>

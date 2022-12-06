@@ -7,7 +7,12 @@ const Form = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
     e.preventDefault();
     setTodos([
       ...todos,
-      { id: uuidv4(), task: taskRef.current?.value, completed: false },
+      {
+        id: uuidv4(),
+        task: taskRef.current?.value,
+        completed: false,
+        editMode: false,
+      },
     ]);
 
     if (taskRef.current) {

@@ -8,6 +8,7 @@ interface ToDoType {
   id: string;
   task: string;
   completed: boolean;
+  editMode: boolean;
 }
 
 function App() {

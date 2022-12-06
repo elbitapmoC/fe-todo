@@ -1,16 +1,40 @@
+import { useState } from "react";
 import IconCheck from "./IconCheck";
 import IconEdit from "./IconEdit";
 import IconTrash from "./IconTrash";
 
 const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
-  const handleDelete = ({ id }: { id: string }) => {
+  const handleDelete = (id: string) => {
     setTodos(todos.filter((todos: any) => todos.id !== id));
   };
 
-  const handleComplete = ({ id }: { id: string }) => {
-    let location = todos.find((x: any) => x.id === id);
-    location.completed = !location.completed;
-    setTodos([...todos, location]);
+  const getObjLocation = (id: string) => {
+    return todos.findIndex((todo: any) => todo.id === id);
+  };
+
+  const handleComplete = (id: string) => {
+    const objectToReplace = getObjLocation(id);
+    todos[objectToReplace].completed = !todos[objectToReplace].completed;
+    setTodos([...todos]);
+  };
+
+  const handleEdit = (id: string) => {
+    const objectToReplace = getObjLocation(id);
+    todos[objectToReplace].editMode = !todos[objectToReplace].editMode;
+    setTodos([...todos]);
+  };
+
+  const handleKeyDown = (e: any, id: string) => {
+    if (e.key === "Enter") {
+      const objectToReplace = getObjLocation(id);
+      todos[objectToReplace].task = e.target.value;
+      todos[objectToReplace].editMode = false;
+      setTodos([...todos]);
+    } else if (e.key === "Escape") {
+      const objectToReplace = getObjLocation(id);
+      todos[objectToReplace].editMode = false;
+      setTodos([...todos]);
+    }
   };
 
   const EmptyState = () => {
@@ -43,9 +67,15 @@ const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
             (
               {
                 completed,
+                editMode,
                 id,
                 task,
-              }: { completed: boolean; id: string; task: string },
+              }: {
+                completed: boolean;
+                editMode: boolean;
+                id: string;
+                task: string;
+              },
               index: number
             ) => {
               return (
@@ -53,22 +83,39 @@ const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
                   key={index}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
-                  <th
-                    scope="row"
-                    className={`py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white ${
-                      completed ? "line-through" : null
-                    }`}
-                  >
-                    {task}
-                  </th>
+                  {!editMode ? (
+                    <th
+                      scope="row"
+                      className={`py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white ${
+                        completed ? "line-through" : null
+                      }`}
+                    >
+                      {task}
+                    </th>
+                  ) : (
+                    <th
+                      scope="row"
+                      className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      <input
+                        type="text"
+                        name="toDoTask"
+                        id="toDoTask"
+                        placeholder={task}
+                        className="p-2.5 border bg-transparent"
+                        onKeyDown={(e) => handleKeyDown(e, id)}
+                      />
+                    </th>
+                  )}
+
                   <td className="py-4 px-6">
-                    <button onClick={() => handleComplete({ id })}>
+                    <button onClick={() => handleComplete(id)}>
                       <IconCheck />
                     </button>
-                    <button>
+                    <button onClick={() => handleEdit(id)}>
                       <IconEdit />
                     </button>
-                    <button onClick={() => handleDelete({ id })}>
+                    <button onClick={() => handleDelete(id)}>
                       <IconTrash />
                     </button>
                   </td>

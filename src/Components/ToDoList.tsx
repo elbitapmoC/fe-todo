@@ -66,18 +66,19 @@ const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
           {todos.map(
             (
               {
-                completed,
-                editMode,
                 id,
                 task,
+                completed,
+                editMode,
               }: {
-                completed: boolean;
-                editMode: boolean;
                 id: string;
                 task: string;
+                completed: boolean;
+                editMode: boolean;
               },
               index: number
             ) => {
+              console.log(index);
               return (
                 <tr
                   key={index}

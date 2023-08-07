@@ -1,14 +1,14 @@
 import { useRef } from "react";
-import { v4 as uuidv4 } from "uuid";
 const Form = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
   const taskRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     setTodos([
       ...todos,
       {
-        id: uuidv4(),
+        id: crypto.randomUUID(),
         task: taskRef.current?.value,
         completed: false,
         editMode: false,
@@ -27,14 +27,15 @@ const Form = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
       </label>
       <input
         type="text"
-        name="toDoTask"
-        id="toDoTask"
+        required
         placeholder="Enter a task..."
         className="p-2.5 border-2 bg-transparent"
         ref={taskRef}
-        required
       />
-      <button type="submit" className="focus:outline-none border-none">
+      <button
+        type="submit"
+        className="focus:outline-none border-none text-lime-500"
+      >
         Submit
       </button>
     </form>

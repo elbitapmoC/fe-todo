@@ -3,6 +3,13 @@ import IconCheck from "./IconCheck";
 import IconEdit from "./IconEdit";
 import IconTrash from "./IconTrash";
 
+interface Todo {
+  id: string;
+  task: string;
+  completed: boolean;
+  editMode: boolean;
+}
+
 const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
   const handleDelete = (id: string) => {
     setTodos(todos.filter((todos: any) => todos.id !== id));
@@ -45,7 +52,7 @@ const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
     );
   };
 
-  if (todos?.length === 0) {
+  if (todos.length === 0) {
     return <EmptyState />;
   }
 
@@ -64,21 +71,7 @@ const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
         </thead>
         <tbody>
           {todos.map(
-            (
-              {
-                id,
-                task,
-                completed,
-                editMode,
-              }: {
-                id: string;
-                task: string;
-                completed: boolean;
-                editMode: boolean;
-              },
-              index: number
-            ) => {
-              console.log(index);
+            ({ id, task, completed, editMode }: Todo, index: number) => {
               return (
                 <tr
                   key={index}

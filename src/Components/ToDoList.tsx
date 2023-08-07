@@ -12,7 +12,9 @@ interface Todo {
 
 const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
   const handleDelete = (id: string) => {
-    setTodos(todos.filter((todos: any) => todos.id !== id));
+    // Makes a shallow copy of our array.
+    // That copy will contain the elements that pass the test.
+    setTodos(todos.filter((td: Todo) => td.id !== id));
   };
 
   const getObjLocation = (id: string) => {
@@ -32,13 +34,9 @@ const ToDoList = ({ todos, setTodos }: { todos: any; setTodos: any }) => {
   };
 
   const handleKeyDown = (e: any, id: string) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.key === "Escape") {
       const objectToReplace = getObjLocation(id);
       todos[objectToReplace].task = e.target.value;
-      todos[objectToReplace].editMode = false;
-      setTodos([...todos]);
-    } else if (e.key === "Escape") {
-      const objectToReplace = getObjLocation(id);
       todos[objectToReplace].editMode = false;
       setTodos([...todos]);
     }
